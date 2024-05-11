@@ -62,7 +62,7 @@ ENVIPINTERACTIVE=$IPINTERACTIVE
 if [ ! -e ~/${MYCONFIG} ]; then
   # prefer curl over wget
   DRIVER="#USEWGET=true"
-  which curl 2>/dev/null >/dev/null
+  command -v curl 2>/dev/null >/dev/null
   [ $? -ne 0 ] && DRIVER="USEWGET=true"
 
   cat <<EOF > ~/${MYCONFIG}
@@ -340,7 +340,7 @@ fCreateCredFile() {
 
 fGetCredFileContents() {
   credfile="$1"
-  which gpg 2>&1 >/dev/null 
+  command -v gpg 2>&1 >/dev/null 
   if [ $? -eq 0 ]; then
     export CREDPAIR=$(gpg -d --batch --passphrase=`uname -n` "${credfile}" 2>"${LOGFILE}")
   else
@@ -555,7 +555,7 @@ fNormalizeClass() {
 
 fCheckReqOrUsage() {
   name="$1"
-  which ${name} 2>/dev/null >/dev/null
+  command -v ${name} 2>/dev/null >/dev/null
   [ $? -ne 0 ] && echo -e "Failed to detect ${name}! This is a runtime requirement, verify installation and try again.\n" && usage
 }
 
@@ -568,7 +568,7 @@ fCheckReqsOrUsage() {
   fCheckReqOrUsage xmllint
 } 
 
-XsLTSTAT=1 ; which xsltproc 2>&1 >/dev/null ; XsLTSTAT=$?
+XsLTSTAT=1 ; command -v xsltproc 2>&1 >/dev/null ; XsLTSTAT=$?
 
 fDisplayResponse() {
   vFile="$1"
