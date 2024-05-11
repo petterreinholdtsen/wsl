@@ -602,12 +602,14 @@ if [ -z "${WSLNOINIT}" ] && [ "1" = "${KEEPHISTORY}" ]; then
    CWSENDPOINT="${WSENDPOINT}"
    CWSUSER="${WSUSER}"
    CWSPASS="${WSPASS}"
+   tmpenv=$(mktemp)
+   chmod =rw ${tmpenv}  # honors umask
    if [ -e "${MYENV}" ]; then
      . ${MYENV}
-     cat ${MYENV} | grep -v "^#" | sort | uniq >temp
+     cat ${MYENV} | grep -v "^#" | sort | uniq >${tmpenv}
    fi
-   echo "##### history ends #####" >>temp
-   /bin/mv temp ${MYENV}
+   echo "##### history ends #####" >>${tmpenv}
+   /bin/mv ${tmpenv} ${MYENV}
    [ -z "${CWSENDPOINT}" ] && CWSENDPOINT="${WSENDPOINT}"
    [ -z "${CWSUSER}" ] && CWSUSER="${WSUSER}"
    [ -z "${CWSPASS}" ] && CWSPASS="${WSPASS}"
